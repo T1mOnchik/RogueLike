@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public float delayTurn = .1f; 
     public float levelStartDelay = 0.5f;     
     [HideInInspector] public Vector3 spawnPosition;
+    private bool isGameStarted = false;
+    private Button StartGameButton;
     private int level = 1;
     private GameObject levelImage;
     private Text levelTxt;
@@ -26,6 +28,7 @@ public class GameManager : MonoBehaviour
         doingSetup = true;
         levelImage = GameObject.Find("LevelImage");
         levelTxt = GameObject.Find("LevelTxt").GetComponent<Text>();
+        HideHomeScreen();
         levelTxt.text = "Day " + level;
         levelImage.SetActive(true);
         if(GameObject.Find("Board") != null){
@@ -54,13 +57,13 @@ public class GameManager : MonoBehaviour
         enemies = new List<Enemy>();
         boardScript = GetComponent<BoardManager>();
         spawnPosition = new Vector3(8, 3 , 0); //типа середина комнаты, чисто для примера поставил
+        StartGameButton = GameObject.Find("StartGameButton").GetComponent<Button>();
+        StartGameButton.onClick.AddListener(InitGame);
         
-        InitGame();
     }
 
     public void SaveRoomBeforeExit(){
         GameObject roomToList = GameObject.Find("Board");             
-        //roomToList.SetActive(false);
         DontDestroyOnLoad(roomToList);
         MapManager.instance.SaveRoomInList(roomToList);
     }
@@ -77,6 +80,12 @@ public class GameManager : MonoBehaviour
         doingSetup = false;
     }
 
+    private void HideHomeScreen(){
+        Debug.Log ("You have clicked the button!");
+        GameObject.Find("HomeScreen").SetActive(false);
+        isGameStarted = true;
+    }
+
     private void Update() {
         if(isPlayerTurn || enemiesMoving || doingSetup){
             return;
@@ -91,6 +100,7 @@ public class GameManager : MonoBehaviour
     public void GameOver(){
         levelTxt.text = "After " + level + " days, you died.";
         levelImage.SetActive(true);
+        isGameStarted = false;
         enabled = false;
     }
 
@@ -106,6 +116,10 @@ public class GameManager : MonoBehaviour
         }
         isPlayerTurn = true;
         enemiesMoving = false;
+    }
+    
+    private void GameLaunched(){
+
     }
 }
 
