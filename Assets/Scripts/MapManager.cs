@@ -55,11 +55,7 @@ public class MapManager : MonoBehaviour
             Debug.Log("Saved index: " + roomMap[coordinates.x, coordinates.y]);
         }
         else{
-            //Debug.Log("Can't save this room in the map"); // Ну крч когда второй раз в комнату заходим 
-            //Destroy(roomList[GetRoomFromMap()]);
             roomList[GetRoomFromMap()] = room;
-                                                    
-                                                    // она не сохраняется, вылетает else условие
         }
     }
 
@@ -78,6 +74,15 @@ public class MapManager : MonoBehaviour
     }
     public Coords GetPlayerCoordinates(){
         return coordinates;
+    }
+
+    public void ClearMap(){
+        for (int i = 0; i < roomList.Count; i++)
+        {
+            
+            Destroy(roomList[i] as GameObject);
+        }
+        
     }
 }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public Vector3 spawnPosition;
     private bool isGameStarted = false;
     private Button StartGameButton;
+    private GameObject restartButton;
     private int level = 1;
     private GameObject levelImage;
     private Text levelTxt;
@@ -28,6 +30,9 @@ public class GameManager : MonoBehaviour
         doingSetup = true;
         levelImage = GameObject.Find("LevelImage");
         levelTxt = GameObject.Find("LevelTxt").GetComponent<Text>();
+        restartButton = GameObject.Find("RestartButton");
+        restartButton.GetComponent<Button>().onClick.AddListener(RestartGame);
+        restartButton.SetActive(false);
         HideHomeScreen();
         levelTxt.text = "Day " + level;
         levelImage.SetActive(true);
@@ -68,8 +73,6 @@ public class GameManager : MonoBehaviour
         MapManager.instance.SaveRoomInList(roomToList);
     }
 
-
-
     private void OnLevelWasLoaded(int index){
         level++;
         InitGame();
@@ -100,8 +103,18 @@ public class GameManager : MonoBehaviour
     public void GameOver(){
         levelTxt.text = "After " + level + " days, you died.";
         levelImage.SetActive(true);
+        restartButton.SetActive(true);
         isGameStarted = false;
         enabled = false;
+    }
+
+    private void RestartGame(){
+        Destroy(gameObject);
+        Destroy(GameObject.Find("MapManager"));
+        //Destroy(GameObject.Find("Board"));
+        MapManager.instance.ClearMap();
+        SceneManager.LoadScene("Main");
+        
     }
 
     IEnumerator MoveEnemies(){ 
