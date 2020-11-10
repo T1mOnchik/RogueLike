@@ -19,16 +19,15 @@ public class MapManager : MonoBehaviour
 
     public static MapManager instance = null;
     public int maxMapScale; // Тут должна быть переменная хранящая максимальный размер карты
-    // ПЕРЕДЕЛАТЬ В ПРИВАТ
-    public ArrayList roomList; // Массив комнат
-    public int[,] roomMap;  // Массив местаположений комнат
+    private ArrayList roomList; // Массив комнат
+    private int[,] roomMap;  // Массив местаположений комнат
                                 // Пример: Мы заходим в комнату, добавляем ее в roomList,
                                 // а в roomMap на позицию например [5][6] записываем адрес этой комнаты в roomList
     private Coords coordinates; // СДЕЛАТЬ ВЫЧИСЛЕНИЯ СЕРЕДИНЫ МАТРИЦЫ
     
 
     // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
         if(instance == null){
             instance = this;
@@ -71,6 +70,7 @@ public class MapManager : MonoBehaviour
         coordinates.x += shiftX;                                    // в зависимости от того куда пошел игрок
         coordinates.y += shiftY;
     }
+
     public Coords GetPlayerCoordinates(){
         return coordinates;
     }
@@ -78,7 +78,6 @@ public class MapManager : MonoBehaviour
     public void ClearMap(){
         for (int i = 0; i < roomList.Count; i++)
         {
-            
             Destroy(roomList[i] as GameObject);
         }
         

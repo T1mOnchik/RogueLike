@@ -24,7 +24,6 @@ public class BoardManager : MonoBehaviour
     public Count foodCount = new Count(1,5);
     public GameObject exit;
     public GameObject outterWall;
-    //public GameObject player;
     public GameObject door;
     public GameObject[] wallTiles;
     public GameObject[] floorTiles;
@@ -33,11 +32,9 @@ public class BoardManager : MonoBehaviour
     private Transform boardHolder;
     private GameObject board;
     private List<Vector3> gridPositions = new List<Vector3>();
-    //private Vector3 playerPosition;
-
-    void boardSetup(){
+    
+    private void boardSetup(){
         board = new GameObject("Board");
-        //boardHolder = board.transform;
         for(int x=-1; x < columns + 1; x++){
             for(int y=-1; y < rows+1; y++){
                 GameObject toInstantiate = floorTiles[Random.Range(0, floorTiles.Length)];
@@ -76,7 +73,7 @@ public class BoardManager : MonoBehaviour
         
     }
 
-    void InitializeList(Vector3 playerPosition){
+    private void InitializeList(Vector3 playerPosition){
         gridPositions.Clear();
         for(int x = 1; x < columns - 1; x++){
             for(int y = 1; y < rows - 1; y++){
@@ -93,26 +90,26 @@ public class BoardManager : MonoBehaviour
         return randPos;
     }
 
-    void spawnAtRandomPositions(int min, int max, GameObject[] tileArray){
+    private void spawnAtRandomPositions(int min, int max, GameObject[] tileArray){
         int objectCount = Random.Range(min, max+1);
         for(int i = 0; i < objectCount; i++){
             GameObject tileChoice = tileArray[Random.Range(0, tileArray.Length)] ;
             Instantiate(tileChoice, randomPosition(), Quaternion.identity).transform.SetParent(board.transform);
-            //instance.transform.SetParent(boardHolder);
         }
     }
 
     public GameObject setupScene(int level, Vector3 spawnPlayerPosition){
-        //playerPosition = spawnPlayerPosition;
         boardSetup();
         InitializeList(spawnPlayerPosition);
         spawnAtRandomPositions(wallCount.min, wallCount.max, wallTiles);
         spawnAtRandomPositions(foodCount.min, foodCount.max, foodTiles);
         int enemyCount = (int)Mathf.Log(level, 2f);
-        spawnAtRandomPositions(enemyCount, enemyCount, enemyTiles);
-        //Instantiate(exit, new Vector3(columns-1, rows-1), Quaternion.identity);
-        //Instantiate(player, playerPosition, Quaternion.identity); 
+        spawnAtRandomPositions(enemyCount, enemyCount, enemyTiles); 
         return board;
+    }
+
+    public Vector3 GetDefaultPlayerPosition(){
+        return new Vector3(columns/2, rows/2, 0);
     }
 }
 

@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject); // Это шоб когда мы на новый левел переходили не уничтожался этот объект
         enemies = new List<Enemy>();
         boardScript = GetComponent<BoardManager>();
-        spawnPosition = new Vector3(8, 3 , 0); //типа середина комнаты, чисто для примера поставил
+        spawnPosition = boardScript.GetDefaultPlayerPosition(); //типа середина комнаты, чисто для примера поставил
         StartGameButton = GameObject.Find("StartGameButton").GetComponent<Button>();
         StartGameButton.onClick.AddListener(InitGame);
         
