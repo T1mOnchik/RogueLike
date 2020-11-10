@@ -11,14 +11,19 @@ public class Enemy : MovingObject
     private Animator animator;
     private Transform target;
     private bool skipMove;
-
+    
     // Start is called before the first frame update
-    protected override void Start()
+    protected override void OnEnable()
     {
+        StartCoroutine(whenEnable());
+        base.OnEnable();
+    }
+
+    IEnumerator whenEnable(){
+        yield return new WaitForSeconds(0.5f);
         GameManager.instance.AddEnemyToList(this);
         animator = GetComponent<Animator>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
-        base.Start();
     }
 
     protected override void AttemptMove<T>(int xDir, int yDir){

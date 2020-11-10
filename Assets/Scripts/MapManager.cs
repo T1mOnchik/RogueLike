@@ -52,7 +52,6 @@ public class MapManager : MonoBehaviour
         if(roomMap[coordinates.x, coordinates.y]==-1){
             roomList.Add(room);
             roomMap[coordinates.x, coordinates.y] = roomList.IndexOf(room);
-            Debug.Log("Saved index: " + roomMap[coordinates.x, coordinates.y]);
         }
         else{
             roomList[GetRoomFromMap()] = room;

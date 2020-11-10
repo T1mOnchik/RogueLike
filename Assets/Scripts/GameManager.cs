@@ -33,12 +33,16 @@ public class GameManager : MonoBehaviour
         restartButton = GameObject.Find("RestartButton");
         restartButton.GetComponent<Button>().onClick.AddListener(RestartGame);
         restartButton.SetActive(false);
-        HideHomeScreen();
+        //Debug.Log("isgamestrted = " + isGameStarted);
+        // if(!isGameStarted){
+            HideHomeScreen();
+        //}
         levelTxt.text = "Day " + level;
         levelImage.SetActive(true);
         if(GameObject.Find("Board") != null){
             GameObject.Find("Board").SetActive(false);
         }
+        
         Invoke("HideLevelImage", levelStartDelay);
         enemies.Clear();
         MapManager mapManager = MapManager.instance; 
@@ -46,7 +50,7 @@ public class GameManager : MonoBehaviour
             boardScript.setupScene(level, spawnPosition);      
         }
         else{
-            mapManager.GetRoomFromList().SetActive(true);;
+            mapManager.GetRoomFromList().SetActive(true);
         }
         Instantiate(player, spawnPosition, Quaternion.identity); 
     }
@@ -84,7 +88,6 @@ public class GameManager : MonoBehaviour
     }
 
     private void HideHomeScreen(){
-        Debug.Log ("You have clicked the button!");
         GameObject.Find("HomeScreen").SetActive(false);
         isGameStarted = true;
     }
@@ -98,6 +101,7 @@ public class GameManager : MonoBehaviour
 
     public void AddEnemyToList(Enemy script){
         enemies.Add(script);
+
     }
 
     public void GameOver(){
@@ -110,9 +114,8 @@ public class GameManager : MonoBehaviour
 
     private void RestartGame(){
         Destroy(gameObject);
-        Destroy(GameObject.Find("MapManager"));
-        //Destroy(GameObject.Find("Board"));
         MapManager.instance.ClearMap();
+        Destroy(GameObject.Find("MapManager"));
         SceneManager.LoadScene("Main");
         
     }
@@ -129,10 +132,6 @@ public class GameManager : MonoBehaviour
         }
         isPlayerTurn = true;
         enemiesMoving = false;
-    }
-    
-    private void GameLaunched(){
-
     }
 }
 

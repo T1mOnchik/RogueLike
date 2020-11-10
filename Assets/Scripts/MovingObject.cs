@@ -11,8 +11,8 @@ public abstract class MovingObject : MonoBehaviour
     private Rigidbody2D rigidBody2D;
     private float inverseSpeed;
 
-    protected virtual void Start(){ // protected virtual can be overriden by their inheriting class
-        //blockingLayer = LayerMask.GetMask("BlockingLayer");
+    // Using OnEnable instead of Start because it works every time when object become enabled(Starts or SetActive(true))
+    protected virtual void OnEnable(){ // protected virtual can be overriden by their inheriting class
         boxCollider = GetComponent<BoxCollider2D>();
         rigidBody2D = GetComponent<Rigidbody2D>();
         inverseSpeed = 1/speed; // мы храним время передвижения в -1 степени, чтобы потом умножать его, а не делить т к это эффективнее при вычисленни.

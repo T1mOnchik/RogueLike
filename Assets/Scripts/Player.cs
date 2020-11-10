@@ -17,26 +17,24 @@ public class Player : MovingObject {
     public AudioClip gameOverSound;
     public AudioClip openingDoor;
     private Text foodText;                  
-
     private Animator animator;
     private int foodPoints;
     private Vector2 touchOrigin = -Vector2.one;
 
-    protected override void Start(){
+    protected override void OnEnable(){
         animator = GetComponent<Animator>();
         foodPoints = GameManager.instance.playerFoodPoints;
         foodText = GameObject.Find("FoodText").GetComponent<Text>();
         SettingFoodText();
-        base.Start();
+        base.OnEnable();
     }
 
     private void Update() {
         if(!GameManager.instance.isPlayerTurn) return;
-
         int horizontal = 0;
         int vertical = 0;
 
-    #if UNITY_STANDALONE || UNITY_WEBPLAYER
+    #if UNITY_STANDALONE
 
         horizontal = (int)Input.GetAxisRaw("Horizontal");
         vertical = (int)Input.GetAxisRaw("Vertical");
