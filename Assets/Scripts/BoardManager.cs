@@ -22,13 +22,13 @@ public class BoardManager : MonoBehaviour
     public int rows = 8;
     public Count wallCount = new Count(5,10);
     public Count foodCount = new Count(1,5);
-    public GameObject exit;
     public GameObject outterWall;
     public GameObject door;
     public GameObject[] wallTiles;
     public GameObject[] floorTiles;
     public GameObject[] foodTiles;
     public GameObject[] enemyTiles;
+    public GameObject[] weaponTiles;
     private Transform boardHolder;
     private GameObject board;
     private List<Vector3> gridPositions = new List<Vector3>();
@@ -98,11 +98,18 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    private void RandomSpawnWeapons(int level){
+        //Random.Range(0, 1);
+        //int weaponCount = (int)Mathf.Log(level, 4f);
+        spawnAtRandomPositions(0, 1, weaponTiles);
+    }
+
     public GameObject setupScene(int level, Vector3 spawnPlayerPosition){
         boardSetup();
         InitializeList(spawnPlayerPosition);
         spawnAtRandomPositions(wallCount.min, wallCount.max, wallTiles);
         spawnAtRandomPositions(foodCount.min, foodCount.max, foodTiles);
+        RandomSpawnWeapons(level);
         int enemyCount = (int)Mathf.Log(level, 2f);
         spawnAtRandomPositions(enemyCount, enemyCount, enemyTiles); 
         return board;
