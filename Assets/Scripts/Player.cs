@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI; 
+using UnityEngine.SceneManagement;
 
 public class Player : MovingObject {
 
@@ -68,23 +69,22 @@ public class Player : MovingObject {
         if(horizontal != 0 || vertical != 0){
             AttemptMove<Wall> (horizontal, vertical);
         }
-        if(transform.position.x == -2 || transform.position.x == 17 || transform.position.y == -2 || transform.position.y == 9){
+        // if(transform.position.x == -2 || transform.position.x == 17 || transform.position.y == -2 || transform.position.y == 9){
             
-            Invoke("Restart", restartLevelDelay);
-            enabled = false;
-        }
+        //     Invoke("Restart", restartLevelDelay);
+        //     enabled = false;
+        // }
     }
 
     private void Restart(){
-        Application.LoadLevel(Application.loadedLevel);
-        //GameManager.instance.roomToList.SetActive(false);
+        SceneManager.LoadScene("Main");
     }
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Exit"){
             GameManager.instance.SaveRoomBeforeExit();
-            Vector3 exitPosition = other.transform.position;
             SoundManager.instance.PlaySingle(openingDoor);
+            Vector3 exitPosition = other.transform.position;
             MapManager mapManager = MapManager.instance;
             if(exitPosition.x>0 && exitPosition.y>0 && exitPosition.x>exitPosition.y){  // right door        
                 GameManager.instance.spawnPosition = new Vector3(0, exitPosition.y, 0);
@@ -105,7 +105,8 @@ public class Player : MovingObject {
             
             Invoke("Restart", restartLevelDelay);
             
-            enabled = false; 
+            //gameObject.SetActive(false);
+            enabled = false;
         }
         if (other.tag == "Food"){
             foodPoints += pointsPerFood;
@@ -119,6 +120,10 @@ public class Player : MovingObject {
             SoundManager.instance.RandomizeSfx(drinkSound1, drinkSound2);
             other.gameObject.SetActive(false);
         }
+        if(other.tag == "Weapon"){
+            Debug.Log(Weapon.instance);
+            Weapon.instance.PickUp(transform); // Пока что просто приклееваем оружие к игроку 
+        }                                      
     }
 
     public void LoseFood(int loss){

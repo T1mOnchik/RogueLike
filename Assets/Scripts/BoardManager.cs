@@ -101,7 +101,7 @@ public class BoardManager : MonoBehaviour
     private void RandomSpawnWeapons(int level){
         //Random.Range(0, 1);
         //int weaponCount = (int)Mathf.Log(level, 4f);
-        spawnAtRandomPositions(0, 1, weaponTiles);
+        spawnAtRandomPositions(1, 1, weaponTiles);
     }
 
     public GameObject setupScene(int level, Vector3 spawnPlayerPosition){

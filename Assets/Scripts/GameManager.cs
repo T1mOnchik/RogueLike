@@ -52,7 +52,15 @@ public class GameManager : MonoBehaviour
         else{
             mapManager.GetRoomFromList().SetActive(true);
         }
-        Instantiate(player, spawnPosition, Quaternion.identity); 
+        if (FindObjectOfType(typeof(Player)) == null)
+        {
+            DontDestroyOnLoad(Instantiate(player, spawnPosition, Quaternion.identity)); 
+        } 
+        else{
+            GameObject.Find("Player(Clone)").transform.position = spawnPosition;
+            //FindObjectOfType(typeof(Player)).enabled = true;
+            GameObject.Find("Player(Clone)").GetComponent<Player>().enabled=true;
+        }
     }
     
     private void Start(){
