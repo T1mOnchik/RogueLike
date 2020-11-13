@@ -57,9 +57,9 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(Instantiate(player, spawnPosition, Quaternion.identity)); 
         } 
         else{
-            GameObject.Find("Player(Clone)").transform.position = spawnPosition;
-            //FindObjectOfType(typeof(Player)).enabled = true;
-            GameObject.Find("Player(Clone)").GetComponent<Player>().enabled=true;
+            player = GameObject.Find("Player(Clone)");
+            player.transform.position = spawnPosition;
+            player.GetComponent<Player>().enabled=true;
         }
     }
     
@@ -121,6 +121,7 @@ public class GameManager : MonoBehaviour
     }
 
     private void RestartGame(){
+        Destroy(player);
         Destroy(gameObject);
         MapManager.instance.ClearMap();
         Destroy(GameObject.Find("MapManager"));

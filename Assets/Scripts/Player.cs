@@ -121,8 +121,7 @@ public class Player : MovingObject {
             other.gameObject.SetActive(false);
         }
         if(other.tag == "Weapon"){
-            Debug.Log(Weapon.instance);
-            Weapon.instance.PickUp(transform); // Пока что просто приклееваем оружие к игроку 
+            other.GetComponent<Weapon>().PickUp(transform); // Пока что просто приклееваем оружие к игроку 
         }                                      
     }
 
