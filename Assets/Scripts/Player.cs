@@ -5,10 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class Player : MovingObject {
 
+    // characteristics
     public int wallDamage = 1;
     public int pointsPerFood = 10;
     public int pointsPerSoda = 20;
-    public float restartLevelDelay = 0.5f;
+    
+    // action sounds
     public AudioClip moveSound1;
     public AudioClip moveSound2;
     public AudioClip eatSound1;
@@ -17,10 +19,14 @@ public class Player : MovingObject {
     public AudioClip drinkSound2;
     public AudioClip gameOverSound;
     public AudioClip openingDoor;
+
+
+    public float restartLevelDelay = 0.5f;
     private Text foodText;                  
     private Animator animator;
     private int foodPoints;
     private Vector2 touchOrigin = -Vector2.one;
+    private GameObject arms;
 
     protected override void OnEnable(){
         animator = GetComponent<Animator>();
@@ -30,7 +36,7 @@ public class Player : MovingObject {
         base.OnEnable();
     }
 
-    private void Update() {
+    private void FixedUpdate() {
         if(!GameManager.instance.isPlayerTurn) return;
         int horizontal = 0;
         int vertical = 0;
@@ -121,9 +127,32 @@ public class Player : MovingObject {
             other.gameObject.SetActive(false);
         }
         if(other.tag == "Weapon"){
-            other.GetComponent<Weapon>().PickUp(transform); // Пока что просто приклееваем оружие к игроку 
+            GameObject grabItemTxt = GameManager.instance.grabItemTxt;
+            if(!grabItemTxt.activeSelf){
+                grabItemTxt.SetActive(true);
+                StartCoroutine(takeWeapon(other));
+            }
+            else{
+                grabItemTxt.SetActive(false);
+                StopCoroutine(takeWeapon(other));
+            }
+            
+            
         }                                      
     }
+
+    private IEnumerator takeWeapon(Collider2D collider2D){
+        while(!Input.GetKey(KeyCode.E)){ // wait until button will be pressed
+            yield return null;
+        }
+        if(Input.GetKey(KeyCode.E)){ // check if button "E" pressed
+                if(arms != null){  
+                    arms.GetComponent<Weapon>().Drop();
+                }   
+                arms = collider2D.GetComponent<Weapon>().PickUp(transform); // Пока что просто приклееваем оружие к игроку     
+                GameManager.instance.grabItemTxt.SetActive(false);
+            }
+     }
 
     public void LoseFood(int loss){
         animator.SetTrigger("isPlayerHit");
@@ -163,8 +192,6 @@ public class Player : MovingObject {
         Wall hitWall = component as Wall;
         hitWall.DamageWall(wallDamage);
         animator.SetTrigger("isPlayerChop");
-
-        //throw new System.NotImplementedException();
     }
 
     private void SettingFoodText(){

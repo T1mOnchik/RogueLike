@@ -7,36 +7,67 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
+    //Instances
     public static GameManager instance = null;
     public BoardManager boardScript;
     public GameObject player;
-    public int playerFoodPoints = 100;
+    
+    //Game`s state vars
     [HideInInspector] public bool isPlayerTurn = true;
     public float delayTurn = .1f; 
     public float levelStartDelay = 0.5f;     
-    [HideInInspector] public Vector3 spawnPosition;
-    private bool isGameStarted = false;
-    private Button StartGameButton;
-    private GameObject restartButton;
-    private int level = 1;
-    private GameObject levelImage;
-    private Text levelTxt;
-    private List<Enemy> enemies;
     private bool enemiesMoving;
     private bool doingSetup;
     
-     
+    //Player`s stats
+    [HideInInspector] public Vector3 spawnPosition;
+    public int playerFoodPoints = 100;
+    private int level = 1;
+    
+    //UI
+    public GameObject grabItemTxt;
+    private Button StartGameButton;
+    private GameObject restartButton;
+    private GameObject levelImage;
+    private Text levelTxt;
+    private List<Enemy> enemies;
+    
+    
+    
+    private void Start(){
+        if(instance == null){
+            instance = this;
+        }
+        else if(instance != this){
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject); // Это шоб когда мы на новый левел переходили не уничтожался этот объект
+        enemies = new List<Enemy>();
+        boardScript = GetComponent<BoardManager>();
+        spawnPosition = boardScript.GetDefaultPlayerPosition(); //типа середина комнаты, чисто для примера поставил
+        StartGameButton = GameObject.Find("StartGameButton").GetComponent<Button>();
+        StartGameButton.onClick.AddListener(InitGame);
+        
+    }
+
+    private void Update() {
+        if(isPlayerTurn || enemiesMoving || doingSetup){
+            return;
+        }    
+        StartCoroutine(MoveEnemies());
+    }
+
     private void InitGame(){
         doingSetup = true;
+
         levelImage = GameObject.Find("LevelImage");
         levelTxt = GameObject.Find("LevelTxt").GetComponent<Text>();
+        grabItemTxt = GameObject.Find("GrabItemHint");
         restartButton = GameObject.Find("RestartButton");
         restartButton.GetComponent<Button>().onClick.AddListener(RestartGame);
-        restartButton.SetActive(false);
-        //Debug.Log("isgamestrted = " + isGameStarted);
-        // if(!isGameStarted){
-            HideHomeScreen();
-        //}
+        
+        HideHomeScreen();
+
         levelTxt.text = "Day " + level;
         levelImage.SetActive(true);
         if(GameObject.Find("Board") != null){
@@ -62,22 +93,6 @@ public class GameManager : MonoBehaviour
             player.GetComponent<Player>().enabled=true;
         }
     }
-    
-    private void Start(){
-        if(instance == null){
-            instance = this;
-        }
-        else if(instance != this){
-            Destroy(gameObject);
-        }
-        DontDestroyOnLoad(gameObject); // Это шоб когда мы на новый левел переходили не уничтожался этот объект
-        enemies = new List<Enemy>();
-        boardScript = GetComponent<BoardManager>();
-        spawnPosition = boardScript.GetDefaultPlayerPosition(); //типа середина комнаты, чисто для примера поставил
-        StartGameButton = GameObject.Find("StartGameButton").GetComponent<Button>();
-        StartGameButton.onClick.AddListener(InitGame);
-        
-    }
 
     public void SaveRoomBeforeExit(){
         GameObject roomToList = GameObject.Find("Board");             
@@ -97,15 +112,11 @@ public class GameManager : MonoBehaviour
 
     private void HideHomeScreen(){
         GameObject.Find("HomeScreen").SetActive(false);
-        isGameStarted = true;
+        restartButton.SetActive(false);
+        grabItemTxt.SetActive(false);
     }
 
-    private void Update() {
-        if(isPlayerTurn || enemiesMoving || doingSetup){
-            return;
-        }    
-        StartCoroutine(MoveEnemies());
-    }
+    
 
     public void AddEnemyToList(Enemy script){
         enemies.Add(script);
@@ -116,7 +127,6 @@ public class GameManager : MonoBehaviour
         levelTxt.text = "After " + level + " days, you died.";
         levelImage.SetActive(true);
         restartButton.SetActive(true);
-        isGameStarted = false;
         enabled = false;
     }
 
@@ -129,7 +139,7 @@ public class GameManager : MonoBehaviour
         
     }
 
-    IEnumerator MoveEnemies(){ 
+    private IEnumerator MoveEnemies(){ 
         enemiesMoving = true;
         yield return new WaitForSeconds(delayTurn);
         if(enemies.Count==0){

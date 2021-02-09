@@ -20,10 +20,11 @@ public class Weapon : MonoBehaviour
         boxCollider2D = GetComponent<BoxCollider2D>();
     }
 
-    public void PickUp(Transform player){
+    public GameObject PickUp(Transform player){
         transform.SetParent(player);
         transform.position = player.position;
         boxCollider2D.enabled = false;
+        return gameObject;
     }
 
     public int Attack(int hp){
@@ -32,6 +33,8 @@ public class Weapon : MonoBehaviour
     }
 
     public void Drop(){
+        transform.SetParent(null);
+        boxCollider2D.enabled = true;
 
     }
 }
