@@ -13,10 +13,6 @@ public class Weapon : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        // if(instance == null){ 
-        //     instance = this;
-        // }
-        //Debug.Log(instance);
         boxCollider2D = GetComponent<BoxCollider2D>();
     }
 
@@ -27,9 +23,8 @@ public class Weapon : MonoBehaviour
         return gameObject;
     }
 
-    public int Attack(int hp){
-        hp -= damage;
-        return hp;
+    public int Attack(Enemy attackedEnemy){
+        return attackedEnemy.hp -= damage;
     }
 
     public void Drop(){

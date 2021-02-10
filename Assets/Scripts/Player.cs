@@ -136,9 +136,8 @@ public class Player : MovingObject {
                 grabItemTxt.SetActive(false);
                 StopCoroutine(takeWeapon(other));
             }
-            
-            
-        }                                      
+        }
+
     }
 
     private IEnumerator takeWeapon(Collider2D collider2D){
@@ -189,8 +188,14 @@ public class Player : MovingObject {
 
     protected override void onCantMove<T>(T component)
     {
-        Wall hitWall = component as Wall;
-        hitWall.DamageWall(wallDamage);
+        if(component.GetComponent<Wall>() != null){
+            Wall hitWall = component as Wall;
+            hitWall.DamageWall(wallDamage);
+        }
+        else if(component.GetComponent<Enemy>() != null){
+            Enemy hitEnemy = component as Enemy;
+            Debug.Log(arms.GetComponent<Weapon>().Attack(hitEnemy));
+        }
         animator.SetTrigger("isPlayerChop");
     }
 

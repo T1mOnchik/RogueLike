@@ -59,8 +59,13 @@ public abstract class MovingObject : MonoBehaviour
             return;
         
         T hitComponent = hit.transform.GetComponent<T>();
+        
         if(!canMove && hitComponent != null){
             onCantMove(hitComponent);
+        }
+        Enemy enemyComponent = hit.transform.GetComponent<Enemy>();  // отдельно проверка enemy, потому что в Т враг почему то не записывается.
+        if(!canMove && enemyComponent != null){
+            onCantMove(enemyComponent);
         }
     }
 

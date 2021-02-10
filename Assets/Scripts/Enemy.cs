@@ -6,6 +6,7 @@ public class Enemy : MovingObject
 {
 
     public int damage;
+    public int hp;
     public AudioClip enemyAttack1;
     public AudioClip enemyAttack2;
     private Animator animator;
