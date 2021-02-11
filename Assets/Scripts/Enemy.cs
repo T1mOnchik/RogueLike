@@ -36,7 +36,11 @@ public class Enemy : MovingObject
         skipMove = false;  //поменять на true чтоб противник ходили через 1 ход
     }
 
-    public void MoveEnemy(){  // Тут мы начинаем прописывать как противник должен к нам идти
+    public bool MoveEnemy(){  // Тут мы начинаем прописывать как противник должен к нам идти
+        if(isDead()){
+            GameManager.instance.enemies.Remove(GetComponent<Enemy>());
+            return false;
+        }
         int xDir = 0;
         int yDir = 0;
         if(Mathf.Abs(target.position.x - transform.position.x) < float.Epsilon){
@@ -46,8 +50,7 @@ public class Enemy : MovingObject
             xDir = target.position.x > transform.position.x ? 1 : -1;
         }
         AttemptMove<Player>(xDir, yDir);
-
-        
+        return true;
     }
 
     protected override void onCantMove<T>(T component){
@@ -55,5 +58,15 @@ public class Enemy : MovingObject
         animator.SetTrigger("ifPlayerHere");
         SoundManager.instance.RandomizeSfx(enemyAttack1, enemyAttack2);
         hitPlayer.LoseFood(damage); 
+    }
+
+    private bool isDead(){
+        if(hp <= 0){
+            Destroy(gameObject);
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

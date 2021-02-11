@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     private GameObject restartButton;
     private GameObject levelImage;
     private Text levelTxt;
-    private List<Enemy> enemies;
+    public List<Enemy> enemies;
     
     
     
@@ -146,8 +146,9 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(delayTurn);
         }
         for(int i = 0; i < enemies.Count; i++){
-            enemies[i].MoveEnemy();
-            yield return new WaitForSeconds(enemies[i].speed);
+            if(enemies[i].MoveEnemy()){
+                yield return new WaitForSeconds(enemies[i].speed);
+            }
         }
         isPlayerTurn = true;
         enemiesMoving = false;

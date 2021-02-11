@@ -135,14 +135,16 @@ public class Player : MovingObject {
             else{
                 grabItemTxt.SetActive(false);
                 StopCoroutine(takeWeapon(other));
+                Debug.Log("stop");
             }
         }
 
     }
 
     private IEnumerator takeWeapon(Collider2D collider2D){
-        while(!Input.GetKey(KeyCode.E)){ // wait until button will be pressed
+        while(!Input.GetKey(KeyCode.E)){ // wait until button will be pressed(unlimited time)
             yield return null;
+            // Ну крч куратина не останавливается после StopCoroutine, походу надо сюда break какой нить добавить
         }
         if(Input.GetKey(KeyCode.E)){ // check if button "E" pressed
                 if(arms != null){  
@@ -204,12 +206,3 @@ public class Player : MovingObject {
     }
 
 }
-
-
-// +  +  +  +  +  +  +
-// +  +  +  +  +  +  +
-// +  +  +  +  +  +  +
-// +  +  +  +  +  +  +
-// +  +  +  +  +  +  +
-// +  +  +  +  +  +  +
-// +  +  +  +  +  +  +
