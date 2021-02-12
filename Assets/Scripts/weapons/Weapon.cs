@@ -24,12 +24,21 @@ public class Weapon : MonoBehaviour
     }
 
     public int Attack(Enemy attackedEnemy){
-        return attackedEnemy.hp -= damage;
+        attackedEnemy.hp -= damage;
+        durability--;
+        return attackedEnemy.hp;
     }
 
     public void Drop(){
         transform.SetParent(null);
         boxCollider2D.enabled = true;
+    }
 
+    public bool BreakDown(){
+        if(durability <= 0){
+            Destroy(gameObject);
+            return true;
+        }
+        return false;
     }
 }

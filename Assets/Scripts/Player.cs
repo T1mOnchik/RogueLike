@@ -135,7 +135,6 @@ public class Player : MovingObject {
             else{
                 grabItemTxt.SetActive(false);
                 StopCoroutine(takeWeapon(other));
-                Debug.Log("stop");
             }
         }
 
@@ -196,7 +195,6 @@ public class Player : MovingObject {
         }
         else if(component.GetComponent<Enemy>() != null){
             Enemy hitEnemy = component as Enemy;
-            Debug.Log(arms.GetComponent<Weapon>().Attack(hitEnemy));
         }
         animator.SetTrigger("isPlayerChop");
     }

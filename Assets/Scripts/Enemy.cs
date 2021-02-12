@@ -62,6 +62,7 @@ public class Enemy : MovingObject
 
     private bool isDead(){
         if(hp <= 0){
+            gameObject.SetActive(false);
             Destroy(gameObject);
             return true;
         }
