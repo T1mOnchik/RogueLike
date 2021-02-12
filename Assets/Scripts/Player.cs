@@ -27,6 +27,7 @@ public class Player : MovingObject {
     private int foodPoints;
     private Vector2 touchOrigin = -Vector2.one;
     private GameObject arms;
+    Coroutine co = null;
 
     protected override void OnEnable(){
         animator = GetComponent<Animator>();
@@ -75,11 +76,6 @@ public class Player : MovingObject {
         if(horizontal != 0 || vertical != 0){
             AttemptMove<Wall> (horizontal, vertical);
         }
-        // if(transform.position.x == -2 || transform.position.x == 17 || transform.position.y == -2 || transform.position.y == 9){
-            
-        //     Invoke("Restart", restartLevelDelay);
-        //     enabled = false;
-        // }
     }
 
     private void Restart(){
@@ -110,8 +106,6 @@ public class Player : MovingObject {
             }
             
             Invoke("Restart", restartLevelDelay);
-            
-            //gameObject.SetActive(false);
             enabled = false;
         }
         if (other.tag == "Food"){
@@ -128,13 +122,14 @@ public class Player : MovingObject {
         }
         if(other.tag == "Weapon"){
             GameObject grabItemTxt = GameManager.instance.grabItemTxt;
+            
             if(!grabItemTxt.activeSelf){
                 grabItemTxt.SetActive(true);
-                StartCoroutine(takeWeapon(other));
-            }
+                StartCoroutine("takeWeapon", other); // it's better to use this instead StartCoroutine(takeWeapon(other)) 
+            }                                        //because when you try to StopCoroutine(takeWeapon(other)) it will think that it's another coroutine.
             else{
                 grabItemTxt.SetActive(false);
-                StopCoroutine(takeWeapon(other));
+                StopCoroutine("takeWeapon");  
             }
         }
 
@@ -143,6 +138,7 @@ public class Player : MovingObject {
     private IEnumerator takeWeapon(Collider2D collider2D){
         while(!Input.GetKey(KeyCode.E)){ // wait until button will be pressed(unlimited time)
             yield return null;
+        //Debug.Log("coro");
             // Ну крч куратина не останавливается после StopCoroutine, походу надо сюда break какой нить добавить
         }
         if(Input.GetKey(KeyCode.E)){ // check if button "E" pressed
@@ -195,6 +191,7 @@ public class Player : MovingObject {
         }
         else if(component.GetComponent<Enemy>() != null){
             Enemy hitEnemy = component as Enemy;
+            arms.GetComponent<Weapon>().Attack(hitEnemy);
         }
         animator.SetTrigger("isPlayerChop");
     }

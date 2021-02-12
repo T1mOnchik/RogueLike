@@ -26,6 +26,8 @@ public class Weapon : MonoBehaviour
     public int Attack(Enemy attackedEnemy){
         attackedEnemy.hp -= damage;
         durability--;
+        BreakDown();
+        Debug.Log("enemy's hp: " + attackedEnemy.hp + " durability  " + durability);  
         return attackedEnemy.hp;
     }
 
