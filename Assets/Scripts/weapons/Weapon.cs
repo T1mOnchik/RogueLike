@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public abstract class Weapon : MonoBehaviour
 {
     
     public int damage;
@@ -11,19 +11,19 @@ public class Weapon : MonoBehaviour
     private BoxCollider2D boxCollider2D;
 
     // Start is called before the first frame update
-    private void Start()
+    protected virtual void Start()
     {
         boxCollider2D = GetComponent<BoxCollider2D>();
     }
 
-    public GameObject PickUp(Transform player){
+    public virtual GameObject PickUp(Transform player){
         transform.SetParent(player);
         transform.position = player.position;
         boxCollider2D.enabled = false;
         return gameObject;
     }
 
-    public int Attack(Enemy attackedEnemy){
+    public virtual int Attack(Enemy attackedEnemy){
         attackedEnemy.hp -= damage;
         durability--;
         BreakDown();
@@ -31,12 +31,12 @@ public class Weapon : MonoBehaviour
         return attackedEnemy.hp;
     }
 
-    public void Drop(){
+    public virtual void Drop(){
         transform.SetParent(null);
         boxCollider2D.enabled = true;
     }
 
-    public bool BreakDown(){
+    public virtual bool BreakDown(){
         if(durability <= 0){
             Destroy(gameObject);
             return true;

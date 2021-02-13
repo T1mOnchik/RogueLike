@@ -1,8 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Club : Weapon
+public class Axe : Weapon
 {
     // Start is called before the first frame update
     protected override void Start() {

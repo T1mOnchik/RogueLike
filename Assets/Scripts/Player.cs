@@ -27,7 +27,6 @@ public class Player : MovingObject {
     private int foodPoints;
     private Vector2 touchOrigin = -Vector2.one;
     private GameObject arms;
-    Coroutine co = null;
 
     protected override void OnEnable(){
         animator = GetComponent<Animator>();
@@ -143,9 +142,9 @@ public class Player : MovingObject {
         }
         if(Input.GetKey(KeyCode.E)){ // check if button "E" pressed
                 if(arms != null){  
-                    arms.GetComponent<Weapon>().Drop();
+                    arms.GetComponentInChildren<Weapon>().Drop();
                 }   
-                arms = collider2D.GetComponent<Weapon>().PickUp(transform); // Пока что просто приклееваем оружие к игроку     
+                arms = collider2D.GetComponentInChildren<Weapon>().PickUp(transform); // Пока что просто приклееваем оружие к игроку     
                 GameManager.instance.grabItemTxt.SetActive(false);
             }
      }
@@ -189,9 +188,9 @@ public class Player : MovingObject {
             Wall hitWall = component as Wall;
             hitWall.DamageWall(wallDamage);
         }
-        else if(component.GetComponent<Enemy>() != null){
+        else if(component.GetComponentInChildren<Enemy>() != null){
             Enemy hitEnemy = component as Enemy;
-            arms.GetComponent<Weapon>().Attack(hitEnemy);
+            arms.GetComponentInChildren<Weapon>().Attack(hitEnemy);
         }
         animator.SetTrigger("isPlayerChop");
     }
