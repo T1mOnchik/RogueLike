@@ -188,8 +188,12 @@ public class Player : MovingObject {
             Wall hitWall = component as Wall;
             hitWall.DamageWall(wallDamage);
         }
-        else if(component.GetComponentInChildren<Enemy>() != null){
+        else if(component.GetComponent<Enemy>() != null){
             Enemy hitEnemy = component as Enemy;
+            if (arms == null)
+            {
+                return;
+            }
             arms.GetComponentInChildren<Weapon>().Attack(hitEnemy);
         }
         animator.SetTrigger("isPlayerChop");

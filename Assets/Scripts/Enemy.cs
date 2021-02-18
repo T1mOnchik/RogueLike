@@ -39,6 +39,7 @@ public class Enemy : MovingObject
     public bool MoveEnemy(){  // Тут мы начинаем прописывать как противник должен к нам идти
         if(isDead()){
             GameManager.instance.enemies.Remove(GetComponent<Enemy>());
+            Death();
             return false;
         }
         int xDir = 0;
@@ -57,17 +58,21 @@ public class Enemy : MovingObject
         Player hitPlayer = component as Player;
         animator.SetTrigger("ifPlayerHere");
         SoundManager.instance.RandomizeSfx(enemyAttack1, enemyAttack2);
-        hitPlayer.LoseFood(damage); 
+        hitPlayer.LoseFood(damage);
     }
 
     private bool isDead(){
         if(hp <= 0){
-            gameObject.SetActive(false);
-            Destroy(gameObject);
+            
             return true;
         }
         else{
             return false;
         }
+    }
+
+    private void Death(){
+        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }
