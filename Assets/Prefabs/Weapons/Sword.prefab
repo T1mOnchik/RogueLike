@@ -152,5 +152,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ef282abebc0ab54887f21279fb1fe9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 6
-  durability: 1
+  damage: 4
+  durability: 3

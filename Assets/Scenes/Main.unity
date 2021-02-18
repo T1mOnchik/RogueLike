@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a74924004ad54d5c994f31e6ad652ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxMapScale: 3
+  maxMapScale: 10
 --- !u!4 &324855706
 Transform:
   m_ObjectHideFlags: 0

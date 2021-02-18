@@ -99,9 +99,32 @@ public class BoardManager : MonoBehaviour
     }
 
     private void RandomSpawnWeapons(int level){
-        //Random.Range(0, 1);
+        int[] k = new int[] {0, 5, 15, 25, 40};
+        int n =  0;
+        int chance = 5;
+        if (level % 2 == 0)
+        {
+            n += k[1];
+        }
+        if (level % 3 == 0)
+        {
+            n += k[2];
+        }
+        if (level % 4 == 0)
+        {
+            n += k[3];
+        }
+        if (level % 5 == 0)
+        {
+            n += k[4];
+        }
+        chance += level + n;
+        Debug.Log("Chance = " + chance);
+        if(chance >= Random.Range(0, 100) ){
+            spawnAtRandomPositions(1, 1, weaponTiles);
+        }
         //int weaponCount = (int)Mathf.Log(level, 4f);
-        spawnAtRandomPositions(1, 1, weaponTiles);
+        
     }
 
     public GameObject setupScene(int level, Vector3 spawnPlayerPosition){
@@ -110,7 +133,7 @@ public class BoardManager : MonoBehaviour
         spawnAtRandomPositions(wallCount.min, wallCount.max, wallTiles);
         spawnAtRandomPositions(foodCount.min, foodCount.max, foodTiles);
         RandomSpawnWeapons(level);
-        int enemyCount = (int)Mathf.Log(level, 2f);
+        int enemyCount = (int)Mathf.Log(level, 1.5f);
         spawnAtRandomPositions(enemyCount, enemyCount, enemyTiles); 
         return board;
     }

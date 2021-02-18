@@ -55,6 +55,9 @@ public class Enemy : MovingObject
     }
 
     protected override void onCantMove<T>(T component){
+        if(component.GetComponent<Enemy>() != null){
+            return;
+        }
         Player hitPlayer = component as Player;
         animator.SetTrigger("ifPlayerHere");
         SoundManager.instance.RandomizeSfx(enemyAttack1, enemyAttack2);
