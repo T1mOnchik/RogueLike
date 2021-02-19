@@ -73,6 +73,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 5
   durability: 2
+  WeaponNum: 3
 --- !u!1 &4413843036389644301
 GameObject:
   m_ObjectHideFlags: 0

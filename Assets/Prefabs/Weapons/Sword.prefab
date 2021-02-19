@@ -154,3 +154,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 4
   durability: 3
+  WeaponNum: 1

@@ -66,7 +66,6 @@ public class Enemy : MovingObject
 
     private bool isDead(){
         if(hp <= 0){
-            
             return true;
         }
         else{

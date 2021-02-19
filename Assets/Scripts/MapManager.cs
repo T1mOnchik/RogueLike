@@ -23,7 +23,7 @@ public class MapManager : MonoBehaviour
     private int[,] roomMap;  // Массив местаположений комнат
                                 // Пример: Мы заходим в комнату, добавляем ее в roomList,
                                 // а в roomMap на позицию например [5][6] записываем адрес этой комнаты в roomList
-    private Coords coordinates; // СДЕЛАТЬ ВЫЧИСЛЕНИЯ СЕРЕДИНЫ МАТРИЦЫ
+    private Coords coordinates; 
     
 
     // Start is called before the first frame update

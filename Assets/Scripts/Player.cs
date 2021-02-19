@@ -30,7 +30,9 @@ public class Player : MovingObject {
 
     protected override void OnEnable(){
         animator = GetComponent<Animator>();
+        //animator.SetInteger("PlayerHasWeaponNum", 0);
         foodPoints = GameManager.instance.playerFoodPoints;
+        animator.SetInteger("PlayerHasWeaponNum", GameManager.instance.playerWeapon);
         foodText = GameObject.Find("FoodText").GetComponent<Text>();
         SettingFoodText();
         base.OnEnable();
@@ -40,6 +42,7 @@ public class Player : MovingObject {
         if(!GameManager.instance.isPlayerTurn) return;
         int horizontal = 0;
         int vertical = 0;
+       
 
     #if UNITY_STANDALONE
 
@@ -137,14 +140,32 @@ public class Player : MovingObject {
     private IEnumerator takeWeapon(Collider2D collider2D){
         while(!Input.GetKey(KeyCode.E)){ // wait until button will be pressed(unlimited time)
             yield return null;
-        //Debug.Log("coro");
-            // Ну крч куратина не останавливается после StopCoroutine, походу надо сюда break какой нить добавить
         }
         if(Input.GetKey(KeyCode.E)){ // check if button "E" pressed
+                int weaponNum = 0; 
                 if(arms != null){  
                     arms.GetComponentInChildren<Weapon>().Drop();
-                }   
+                    animator.SetInteger("PlayerHasWeaponNum", weaponNum);
+                }
                 arms = collider2D.GetComponentInChildren<Weapon>().PickUp(transform); // Пока что просто приклееваем оружие к игроку     
+               
+                if (arms.GetComponent<Sword>() != null)
+                {
+                    weaponNum = 1;
+                }
+                else if(arms.GetComponent<Club>() != null)
+                {
+                    weaponNum = 2;
+                }
+                else if(arms.GetComponent<Axe>() != null)
+                {
+                    weaponNum = 3;
+                }
+                else
+                {
+                    Debug.Log("Unknown weapon, there is no animation for it");
+                }
+                animator.SetInteger("PlayerHasWeaponNum", weaponNum);   
                 GameManager.instance.grabItemTxt.SetActive(false);
             }
      }
@@ -158,6 +179,7 @@ public class Player : MovingObject {
 
     private void OnDisable() {
         GameManager.instance.playerFoodPoints = foodPoints;
+        GameManager.instance.playerWeapon = arms.GetComponentInChildren<Weapon>().WeaponNum;
     }
 
     protected override void AttemptMove<T>(int xDir, int yDir)
@@ -195,6 +217,10 @@ public class Player : MovingObject {
                 return;
             }
             arms.GetComponentInChildren<Weapon>().Attack(hitEnemy);
+            if (arms == null)
+            {
+                animator.SetInteger("PlayerHasWeaponNum", 0);
+            }
         }
         animator.SetTrigger("isPlayerChop");
     }

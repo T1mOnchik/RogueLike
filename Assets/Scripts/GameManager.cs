@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     //Player`s stats
     [HideInInspector] public Vector3 spawnPosition;
     public int playerFoodPoints = 100;
+    public int playerWeapon = 0;
     private int level = 1;
     
     //UI

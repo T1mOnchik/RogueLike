@@ -99,7 +99,7 @@ public class BoardManager : MonoBehaviour
     }
 
     private void RandomSpawnWeapons(int level){
-        int[] k = new int[] {0, 5, 15, 25, 40};
+        int[] k = new int[] {0, 5, 15, 25, 40}; // Pseudo random formula: chance += level + k 
         int n =  0;
         int chance = 5;
         if (level % 2 == 0)
@@ -123,7 +123,7 @@ public class BoardManager : MonoBehaviour
         if(chance >= Random.Range(0, 100) ){
             spawnAtRandomPositions(1, 1, weaponTiles);
         }
-        //int weaponCount = (int)Mathf.Log(level, 4f);
+        spawnAtRandomPositions(5, 5, weaponTiles);
         
     }
 

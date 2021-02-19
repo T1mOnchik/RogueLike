@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1702373307867560820}
   - component: {fileID: 1702373307867560821}
-  - component: {fileID: 1702373307867560826}
   - component: {fileID: 2930943350216337726}
   - component: {fileID: 5644909795154944975}
   - component: {fileID: -5296668372093914870}
+  - component: {fileID: 4162918602465760863}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -85,25 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
---- !u!95 &1702373307867560826
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1702373307867560827}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4bbc151a25cdb40a4bfadddcdc27dcc9, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!61 &2930943350216337726
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -170,7 +151,6 @@ MonoBehaviour:
   wallDamage: 1
   pointsPerFood: 10
   pointsPerSoda: 20
-  restartLevelDelay: 0.5
   moveSound1: {fileID: 8300000, guid: 892962212a4b74d1c9f578a3b6ea6439, type: 3}
   moveSound2: {fileID: 8300000, guid: a826bc3d758db43d6ae9caf415b63d1d, type: 3}
   eatSound1: {fileID: 8300000, guid: 1cb61f83d60374c7389bb547431919e3, type: 3}
@@ -179,3 +159,23 @@ MonoBehaviour:
   drinkSound2: {fileID: 8300000, guid: bcb9dda73ee914d3e8f252895f73f461, type: 3}
   gameOverSound: {fileID: 8300000, guid: e2beefeb2273f4efe992adf5b8d67c29, type: 3}
   openingDoor: {fileID: 8300000, guid: 24d73765699ce3e46bb23cabc3a46494, type: 3}
+  restartLevelDelay: 0.5
+--- !u!95 &4162918602465760863
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702373307867560827}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4bbc151a25cdb40a4bfadddcdc27dcc9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
