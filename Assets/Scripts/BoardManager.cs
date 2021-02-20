@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using System;
 using Random = UnityEngine.Random; 
@@ -22,13 +22,13 @@ public class BoardManager : MonoBehaviour
     public int rows = 8;
     public Count wallCount = new Count(5,10);
     public Count foodCount = new Count(1,5);
-    public GameObject exit;
     public GameObject outterWall;
     public GameObject door;
     public GameObject[] wallTiles;
     public GameObject[] floorTiles;
     public GameObject[] foodTiles;
     public GameObject[] enemyTiles;
+    public GameObject[] weaponTiles;
     private Transform boardHolder;
     private GameObject board;
     private List<Vector3> gridPositions = new List<Vector3>();
@@ -98,12 +98,42 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    private void RandomSpawnWeapons(int level){
+        int[] k = new int[] {0, 5, 15, 25, 40}; // Pseudo random formula: chance += level + k 
+        int n =  0;
+        int chance = 5;
+        if (level % 2 == 0)
+        {
+            n += k[1];
+        }
+        if (level % 3 == 0)
+        {
+            n += k[2];
+        }
+        if (level % 4 == 0)
+        {
+            n += k[3];
+        }
+        if (level % 5 == 0)
+        {
+            n += k[4];
+        }
+        chance += level + n;
+        Debug.Log("Weapon spawn chance = " + chance);
+        if(chance >= Random.Range(0, 100) ){
+            spawnAtRandomPositions(1, 1, weaponTiles);
+        }
+        //spawnAtRandomPositions(5, 5, weaponTiles);
+        
+    }
+
     public GameObject setupScene(int level, Vector3 spawnPlayerPosition){
         boardSetup();
         InitializeList(spawnPlayerPosition);
         spawnAtRandomPositions(wallCount.min, wallCount.max, wallTiles);
         spawnAtRandomPositions(foodCount.min, foodCount.max, foodTiles);
-        int enemyCount = (int)Mathf.Log(level, 2f);
+        RandomSpawnWeapons(level);
+        int enemyCount = (int)Mathf.Log(level, 1.5f);
         spawnAtRandomPositions(enemyCount, enemyCount, enemyTiles); 
         return board;
     }
