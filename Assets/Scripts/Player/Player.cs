@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine.UI; 
 using UnityEngine.SceneManagement;
 
+using static PlayerOnCollision;
+
 public class Player : MovingObject {
 
     // characteristics
@@ -30,7 +32,6 @@ public class Player : MovingObject {
 
     protected override void OnEnable(){
         animator = GetComponent<Animator>();
-        //animator.SetInteger("PlayerHasWeaponNum", 0);
         foodPoints = GameManager.instance.playerFoodPoints;
         animator.SetInteger("PlayerHasWeaponNum", GameManager.instance.playerWeapon);
         foodText = GameObject.Find("FoodText").GetComponent<Text>();
@@ -87,28 +88,9 @@ public class Player : MovingObject {
     }
 
     void OnTriggerEnter2D(Collider2D other) {
+        PlayerOnCollision playerOnCollision = new PlayerOnCollision();
         if (other.tag == "Exit"){
-            GameManager.instance.SaveRoomBeforeExit();
-            SoundManager.instance.PlaySingle(openingDoor);
-            Vector3 exitPosition = other.transform.position;
-            MapManager mapManager = MapManager.instance;
-            if(exitPosition.x>0 && exitPosition.y>0 && exitPosition.x>exitPosition.y){  // right door        
-                GameManager.instance.spawnPosition = new Vector3(0, exitPosition.y, 0);
-                mapManager.ChangePlayerCoordinates(0,1); //shift right y+=1
-            }
-            if(exitPosition.x>0 && exitPosition.y>0 && exitPosition.x<=exitPosition.y){ //Top door
-                GameManager.instance.spawnPosition = new Vector3(exitPosition.x, 0, 0);
-                mapManager.ChangePlayerCoordinates(-1,0); //shift top x += -1
-            }
-            if(exitPosition.x<0 && exitPosition.y>0){  // left door
-                GameManager.instance.spawnPosition = new Vector3(15, exitPosition.y, 0);     // Тут мы записываем в спавнПлеерПозишн
-                mapManager.ChangePlayerCoordinates(0,-1); //shift left y += -1
-            }                                                                                // Мы берем позицию двери в которую вошли и записываем 
-            if(exitPosition.x>0 && exitPosition.y<0){  // bot door                           // противоположную точку на карте где прибавляем +1 к координате чтоб заспавниться не в двери
-                GameManager.instance.spawnPosition = new Vector3(exitPosition.x, 7, 0);      // НАДА ПЕРЕПИСАТЬ сделать переменные позиций дверей и перемещать игрока на противоположная дверь +1 к координате
-                mapManager.ChangePlayerCoordinates(1,0); //shift bottom x += 1
-            }
-            
+            playerOnCollision.doExit(other, openingDoor);
             Invoke("Restart", restartLevelDelay);
             enabled = false;
         }
