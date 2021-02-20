@@ -119,11 +119,11 @@ public class BoardManager : MonoBehaviour
             n += k[4];
         }
         chance += level + n;
-        Debug.Log("Chance = " + chance);
+        Debug.Log("Weapon spawn chance = " + chance);
         if(chance >= Random.Range(0, 100) ){
             spawnAtRandomPositions(1, 1, weaponTiles);
         }
-        spawnAtRandomPositions(5, 5, weaponTiles);
+        //spawnAtRandomPositions(5, 5, weaponTiles);
         
     }
 

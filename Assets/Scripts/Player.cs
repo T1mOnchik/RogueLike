@@ -42,8 +42,10 @@ public class Player : MovingObject {
         if(!GameManager.instance.isPlayerTurn) return;
         int horizontal = 0;
         int vertical = 0;
-       
-
+        if (arms == null){
+            animator.SetInteger("PlayerHasWeaponNum", 0);
+        }
+        
     #if UNITY_STANDALONE
 
         horizontal = (int)Input.GetAxisRaw("Horizontal");
@@ -179,7 +181,11 @@ public class Player : MovingObject {
 
     private void OnDisable() {
         GameManager.instance.playerFoodPoints = foodPoints;
-        GameManager.instance.playerWeapon = arms.GetComponentInChildren<Weapon>().WeaponNum;
+        if (arms != null)
+        {
+            GameManager.instance.playerWeapon = arms.GetComponentInChildren<Weapon>().WeaponNum;    
+        }
+        
     }
 
     protected override void AttemptMove<T>(int xDir, int yDir)
@@ -217,10 +223,6 @@ public class Player : MovingObject {
                 return;
             }
             arms.GetComponentInChildren<Weapon>().Attack(hitEnemy);
-            if (arms == null)
-            {
-                animator.SetInteger("PlayerHasWeaponNum", 0);
-            }
         }
         animator.SetTrigger("isPlayerChop");
     }
