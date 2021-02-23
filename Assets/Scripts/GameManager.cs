@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     private GameObject restartButton;
     private GameObject levelImage;
     private Text levelTxt;
+    private GameObject escMenu;
 
     public List<Enemy> enemies;
 
@@ -54,15 +55,25 @@ public class GameManager : MonoBehaviour
     }
 
     private void Update() {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(escMenu.activeSelf == false){
+                escMenu.SetActive(true);
+            }
+            else
+            {
+                escMenu.SetActive(false);
+            }
+        }    
         if(isPlayerTurn || enemiesMoving || doingSetup){
             return;
-        }    
+        }
         StartCoroutine(MoveEnemies());
     }
 
     private void InitGame(){
         doingSetup = true;
-
+        escMenu = GameObject.Find("EscMenu");
         levelImage = GameObject.Find("LevelImage");
         levelTxt = GameObject.Find("LevelTxt").GetComponent<Text>();
         grabItemTxt = GameObject.Find("GrabItemHint");
@@ -117,6 +128,7 @@ public class GameManager : MonoBehaviour
         GameObject.Find("HomeScreen").SetActive(false);
         restartButton.SetActive(false);
         grabItemTxt.SetActive(false);
+        escMenu.SetActive(false);
     }
 
     
