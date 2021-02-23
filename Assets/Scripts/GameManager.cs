@@ -28,12 +28,13 @@ public class GameManager : MonoBehaviour
     //UI
     public GameObject grabItemTxt;
     private Button StartGameButton;
+    private Button exitGameButton;
     private GameObject restartButton;
     private GameObject levelImage;
     private Text levelTxt;
+
     public List<Enemy> enemies;
-    
-    
+
     
     private void Start(){
         if(instance == null){
@@ -47,8 +48,9 @@ public class GameManager : MonoBehaviour
         boardScript = GetComponent<BoardManager>();
         spawnPosition = boardScript.GetDefaultPlayerPosition(); //типа середина комнаты, чисто для примера поставил
         StartGameButton = GameObject.Find("StartGameButton").GetComponent<Button>();
+        exitGameButton = GameObject.Find("ExitGameButton").GetComponent<Button>();
         StartGameButton.onClick.AddListener(InitGame);
-        
+        exitGameButton.onClick.AddListener(QuitGame);
     }
 
     private void Update() {
@@ -138,6 +140,10 @@ public class GameManager : MonoBehaviour
         Destroy(GameObject.Find("MapManager"));
         SceneManager.LoadScene("Main");
         
+    }
+
+    private void QuitGame(){
+        Application.Quit();
     }
 
     private IEnumerator MoveEnemies(){ 
