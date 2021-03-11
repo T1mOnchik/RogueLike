@@ -32,7 +32,11 @@ public class GameManager : MonoBehaviour
     private GameObject restartButton;
     private GameObject levelImage;
     private Text levelTxt;
+
+    // menu
     private GameObject escMenu;
+    private Button menuExitToMainMenuButton;
+    private Button menuResumeGameButton;
 
     public List<Enemy> enemies;
 
@@ -73,13 +77,13 @@ public class GameManager : MonoBehaviour
 
     private void InitGame(){
         doingSetup = true;
-        escMenu = GameObject.Find("EscMenu");
+        InitializeEscMenu();
         levelImage = GameObject.Find("LevelImage");
         levelTxt = GameObject.Find("LevelTxt").GetComponent<Text>();
         grabItemTxt = GameObject.Find("GrabItemHint");
         restartButton = GameObject.Find("RestartButton");
         restartButton.GetComponent<Button>().onClick.AddListener(RestartGame);
-        
+
         HideHomeScreen();
 
         levelTxt.text = "Day " + level;
@@ -99,7 +103,7 @@ public class GameManager : MonoBehaviour
         }
         if (FindObjectOfType(typeof(Player)) == null)
         {
-            DontDestroyOnLoad(Instantiate(player, spawnPosition, Quaternion.identity)); 
+            DontDestroyOnLoad(player = Instantiate(player, spawnPosition, Quaternion.identity)); 
         } 
         else{
             player = GameObject.Find("Player(Clone)");
@@ -171,6 +175,14 @@ public class GameManager : MonoBehaviour
         }
         isPlayerTurn = true;
         enemiesMoving = false;
+    }
+
+    private void InitializeEscMenu(){
+        escMenu = GameObject.Find("EscMenu");
+        menuResumeGameButton = escMenu.transform.Find("ResumeMenuButton").GetComponent<Button>();
+        menuExitToMainMenuButton = GameObject.Find("ExitMenuButton").GetComponent<Button>();
+        menuResumeGameButton.onClick.AddListener(delegate{escMenu.SetActive(false);});
+        menuExitToMainMenuButton.onClick.AddListener(RestartGame);
     }
 }
 
