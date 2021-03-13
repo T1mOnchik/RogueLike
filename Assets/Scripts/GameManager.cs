@@ -11,32 +11,20 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
     public BoardManager boardScript;
     public GameObject player;
+    private UImanager uiManager;
     
     //Game`s state vars
     [HideInInspector] public bool isPlayerTurn = true;
-    public float delayTurn = .1f; 
-    public float levelStartDelay = 0.5f;     
+    [HideInInspector] public bool doingSetup;
+    public const float delayTurn = .1f;
+    // public float levelStartDelay = 0.5f;     //should be const
     private bool enemiesMoving;
-    private bool doingSetup;
     
     //Player`s stats
-    [HideInInspector] public Vector3 spawnPosition;
     public int playerFoodPoints = 100;
     public int playerWeapon = 0;
-    private int level = 1;
-    
-    //UI
-    public GameObject grabItemTxt;
-    private Button StartGameButton;
-    private Button exitGameButton;
-    private GameObject restartButton;
-    private GameObject levelImage;
-    private Text levelTxt;
-
-    // menu
-    private GameObject escMenu;
-    private Button menuExitToMainMenuButton;
-    private Button menuResumeGameButton;
+    [HideInInspector] public Vector3 spawnPosition; 
+    [HideInInspector] public int level = 1;
 
     public List<Enemy> enemies;
 
@@ -52,47 +40,31 @@ public class GameManager : MonoBehaviour
         enemies = new List<Enemy>();
         boardScript = GetComponent<BoardManager>();
         spawnPosition = boardScript.GetDefaultPlayerPosition(); //типа середина комнаты, чисто для примера поставил
-        StartGameButton = GameObject.Find("StartGameButton").GetComponent<Button>();
-        exitGameButton = GameObject.Find("ExitGameButton").GetComponent<Button>();
-        StartGameButton.onClick.AddListener(InitGame);
-        exitGameButton.onClick.AddListener(QuitGame);
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if(escMenu.activeSelf == false){
-                escMenu.SetActive(true);
-            }
-            else
-            {
-                escMenu.SetActive(false);
-            }
-        }    
         if(isPlayerTurn || enemiesMoving || doingSetup){
             return;
         }
         StartCoroutine(MoveEnemies());
     }
 
-    private void InitGame(){
+    private void OnEnable() {
+        SceneManager.sceneLoaded += levelWasLoaded;
+    }
+
+    private void levelWasLoaded(Scene scene, LoadSceneMode mode){
+        level++;
+        InitGame();
+    }
+
+    public void InitGame(){
         doingSetup = true;
-        InitializeEscMenu();
-        levelImage = GameObject.Find("LevelImage");
-        levelTxt = GameObject.Find("LevelTxt").GetComponent<Text>();
-        grabItemTxt = GameObject.Find("GrabItemHint");
-        restartButton = GameObject.Find("RestartButton");
-        restartButton.GetComponent<Button>().onClick.AddListener(RestartGame);
-
-        HideHomeScreen();
-
-        levelTxt.text = "Day " + level;
-        levelImage.SetActive(true);
+        uiManager = UImanager.instance;
+        uiManager.InitGameUI();
         if(GameObject.Find("Board") != null){
             GameObject.Find("Board").SetActive(false);
         }
-        
-        Invoke("HideLevelImage", levelStartDelay);
         enemies.Clear();
         MapManager mapManager = MapManager.instance; 
         if(mapManager.GetRoomFromMap() < 0){  
@@ -118,47 +90,25 @@ public class GameManager : MonoBehaviour
         MapManager.instance.SaveRoomInList(roomToList);
     }
 
-    private void OnLevelWasLoaded(int index){
-        level++;
-        InitGame();
-    }
-
-    private void HideLevelImage(){
-        levelImage.SetActive(false);
-        doingSetup = false;
-    }
-
-    private void HideHomeScreen(){
-        GameObject.Find("HomeScreen").SetActive(false);
-        restartButton.SetActive(false);
-        grabItemTxt.SetActive(false);
-        escMenu.SetActive(false);
-    }
-
-    
-
     public void AddEnemyToList(Enemy script){
         enemies.Add(script);
 
     }
 
     public void GameOver(){
-        levelTxt.text = "After " + level + " days, you died.";
-        levelImage.SetActive(true);
-        restartButton.SetActive(true);
+        uiManager.GameOverUI();
         enabled = false;
     }
 
-    private void RestartGame(){
+    public void RestartGame(){
         Destroy(player);
         Destroy(gameObject);
         MapManager.instance.ClearMap();
         Destroy(GameObject.Find("MapManager"));
         SceneManager.LoadScene("Main");
-        
     }
 
-    private void QuitGame(){
+    public void QuitGame(){
         Application.Quit();
     }
 
@@ -175,14 +125,6 @@ public class GameManager : MonoBehaviour
         }
         isPlayerTurn = true;
         enemiesMoving = false;
-    }
-
-    private void InitializeEscMenu(){
-        escMenu = GameObject.Find("EscMenu");
-        menuResumeGameButton = escMenu.transform.Find("ResumeMenuButton").GetComponent<Button>();
-        menuExitToMainMenuButton = GameObject.Find("ExitMenuButton").GetComponent<Button>();
-        menuResumeGameButton.onClick.AddListener(delegate{escMenu.SetActive(false);});
-        menuExitToMainMenuButton.onClick.AddListener(RestartGame);
     }
 }
 

@@ -8,6 +8,7 @@ public class Loader : MonoBehaviour
 
     public GameObject gameManager;
     public GameObject mapManager;
+    public GameObject uiManager;
     
     // Start is called before the first frame update
     void Start()
@@ -15,8 +16,19 @@ public class Loader : MonoBehaviour
         if(GameManager.instance == null){
             Instantiate(gameManager);
         }
-        if(MapManager.instance == null){
-            Instantiate(mapManager);
+        // if(MapManager.instance == null){
+        //     Instantiate(mapManager);
+        // }
+        if(UImanager.instance == null){
+            StartCoroutine("waitForGM");
         }
+    }
+
+    IEnumerator waitForGM(){
+        while(GameManager.instance == null){
+            yield return new WaitForEndOfFrame();
+        }
+        Instantiate(uiManager);
+        yield break;
     }
 }
