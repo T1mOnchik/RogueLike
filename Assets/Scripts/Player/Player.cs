@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine.UI; 
 using UnityEngine.SceneManagement;
 
-using static PlayerOnCollision;
 
 public class Player : MovingObject {
 
@@ -107,7 +106,7 @@ public class Player : MovingObject {
             other.gameObject.SetActive(false);
         }
         if(other.tag == "Weapon"){
-            GameObject grabItemTxt = GameManager.instance.grabItemTxt;
+            GameObject grabItemTxt = UImanager.instance.grabItemTxt;
             
             if(!grabItemTxt.activeSelf){
                 grabItemTxt.SetActive(true);
@@ -150,7 +149,7 @@ public class Player : MovingObject {
                     Debug.Log("Unknown weapon, there is no animation for it");
                 }
                 animator.SetInteger("PlayerHasWeaponNum", weaponNum);   
-                GameManager.instance.grabItemTxt.SetActive(false);
+                UImanager.instance.grabItemTxt.SetActive(false);
             }
      }
 

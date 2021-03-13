@@ -96,8 +96,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardScript: {fileID: 0}
   player: {fileID: 1702373307867560827, guid: 132b283525e724b778f9e65912e9f48b, type: 3}
-  playerFoodPoints: 100
   isPlayerTurn: 1
   delayTurn: 0.1
   levelStartDelay: 1
   spawnPosition: {x: 0, y: 0, z: 0}
+  playerFoodPoints: 100
+  playerWeapon: 0
+  grabItemTxt: {fileID: 0}
+  enemies: []
