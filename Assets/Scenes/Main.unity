@@ -625,6 +625,8 @@ MonoBehaviour:
   gameManager: {fileID: 2475778303390028362, guid: 2d497767dd4714153a600b7014e3a272,
     type: 3}
   mapManager: {fileID: 0}
+  uiManager: {fileID: 6160816633889427712, guid: e9e78b537e784bf45b59408d551092ea,
+    type: 3}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0

@@ -49,11 +49,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(MoveEnemies());
     }
 
-    private void OnEnable() {
-        SceneManager.sceneLoaded += levelWasLoaded;
-    }
-
-    private void levelWasLoaded(Scene scene, LoadSceneMode mode){
+    private void OnLevelWasLoaded(int index){
         level++;
         InitGame();
     }
