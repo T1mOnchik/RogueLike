@@ -101,6 +101,7 @@ public class GameManager : MonoBehaviour
         Destroy(gameObject);
         MapManager.instance.ClearMap();
         Destroy(GameObject.Find("MapManager"));
+        Destroy(uiManager);
         SceneManager.LoadScene("Main");
     }
 

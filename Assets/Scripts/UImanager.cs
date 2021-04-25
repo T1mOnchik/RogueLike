@@ -42,6 +42,8 @@ public class UImanager : MonoBehaviour
     }
 
     public void InitGameUI(){
+        Time.timeScale = 1;
+        Invoke("HideLevelImage", levelStartDelay);
         levelImage = GameObject.Find("LevelImage");
         levelTxt = GameObject.Find("LevelTxt").GetComponent<Text>();
         grabItemTxt = GameObject.Find("GrabItemHint");
@@ -51,8 +53,6 @@ public class UImanager : MonoBehaviour
         HideHomeScreen();
         levelTxt.text = "Day " + gameManager.level;
         levelImage.SetActive(true);
-
-        Invoke("HideLevelImage", levelStartDelay);
     }
 
     // Update is called once per frame
